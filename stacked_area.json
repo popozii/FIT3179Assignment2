@@ -1,0 +1,27 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "UNESCO Heritage Sites by Type (Filtered by Brush)",
+  "width": 900,
+  "height": 300,
+  "data": {"url": "whc-sites-2025.csv"},
+  "transform": [
+    {"filter": "isValid(datum.date_inscribed)"},
+    {"aggregate": [{"op": "count", "as": "count"}], "groupby": ["date_inscribed", "category"]}
+  ],
+  "mark": {"type": "area", "line": true},
+  "encoding": {
+    "x": {
+      "field": "date_inscribed",
+      "type": "temporal",
+      "title": "Year",
+      "scale": {"domain": {"param": "brush"}}
+    },
+    "y": {"field": "count", "type": "quantitative", "title": "Number of Sites"},
+    "color": {"field": "category", "type": "nominal", "title": "Type"},
+    "tooltip": [
+      {"field": "date_inscribed", "title": "Year"},
+      {"field": "category", "title": "Type"},
+      {"field": "count", "title": "Count"}
+    ]
+  }
+}

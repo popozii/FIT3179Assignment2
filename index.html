@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cultural Heritage & Tourism - FIT3179 Assignment 2</title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .intro-section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .intro-section h2 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .intro-section p {
+            margin-bottom: 1rem;
+            text-align: justify;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .chart-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .chart-description {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            color: #666;
+        }
+
+        .visualization {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .data-source {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-top: 1rem;
+        }
+
+        .author-info {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .section-divider {
+            text-align: center;
+            margin: 3rem 0;
+            position: relative;
+        }
+
+        .section-divider h2 {
+            background: white;
+            display: inline-block;
+            padding: 0 2rem;
+            color: #2c3e50;
+            font-size: 1.8rem;
+        }
+
+        .section-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #ddd;
+            z-index: -1;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 0 15px;
+            }
+            
+            .chart-container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Cultural Heritage & Global Tourism</h1>
+            <p>Exploring the Relationship Between UNESCO World Heritage Sites and International Tourism</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="intro-section">
+            <h2>About This Visualization</h2>
+            <p>This interactive dashboard explores the intersection of cultural heritage preservation and global tourism patterns. UNESCO World Heritage Sites represent humanity's most treasured cultural and natural landmarks, while international tourism data reveals global travel trends and economic impacts.</p>
+            <p>The visualization combines data from UNESCO World Heritage Centre and World Bank tourism statistics to provide insights into how cultural heritage sites are distributed globally and how they relate to tourism patterns across different regions and time periods.</p>
+            <p><strong>Data Sources:</strong> UNESCO World Heritage Centre (2025) & World Bank - International Tourism Arrivals</p>
+        </section>
+
+        <!-- UNESCO Heritage Section -->
+        <div class="section-divider">
+            <h2>UNESCO World Heritage</h2>
+        </div>
+
+        <!-- UNESCO Sites Map -->
+        <section class="chart-container">
+            <h2 class="chart-title">Global Distribution of UNESCO World Heritage Sites</h2>
+            <p class="chart-description">This interactive map shows all UNESCO World Heritage Sites worldwide. Cultural sites are shown in blue, natural sites in green, and mixed sites in orange. Click on the legend to filter by site type, and hover over any point to see detailed information about each heritage site.</p>
+            <div class="visualization" id="whc_points"></div>
+        </section>
+
+        <!-- Top Countries Bar Chart -->
+        <section class="chart-container">
+            <h2 class="chart-title">Top 15 Countries by Number of Heritage Sites</h2>
+            <p class="chart-description">This chart displays the countries with the most UNESCO World Heritage Sites. Italy and China lead with the highest numbers, reflecting their rich cultural histories. The red dashed line shows the average number of sites among these top countries.</p>
+            <div class="visualization" id="barchart"></div>
+        </section>
+
+        <!-- Tourism Section -->
+        <div class="section-divider">
+            <h2>Global Tourism Patterns</h2>
+        </div>
+
+        <!-- Tourism Timeline -->
+        <section class="chart-container">
+            <h2 class="chart-title">Global Tourist Arrivals Over Time</h2>
+            <p class="chart-description">This timeline shows the total number of international tourist arrivals worldwide from 1995 to 2020. Use the brush selection tool to focus on specific time periods. Note the significant impact of global events like the 2020 pandemic on tourism numbers.</p>
+            <div class="visualization" id="arrivals_brush"></div>
+        </section>
+
+      
+        
+
+        <!-- Combined Analysis Section -->
+        <div class="section-divider">
+            <h2>Heritage & Tourism Analysis</h2>
+        </div>
+
+        <!-- Growth Comparison -->
+        <section class="chart-container">
+            <h2 class="chart-title">Heritage Sites Growth Over Time</h2>
+            <p class="chart-description">This area chart shows the cumulative growth of UNESCO World Heritage Sites since the program's inception. Compare this growth pattern with the tourism timeline above to observe potential correlations between heritage designation and tourism interest.</p>
+            <div class="visualization" id="areachart"></div>
+        </section>
+
+        
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 FIT3179 Data Visualisation Assignment 2</p>
+            <p class="author-info">Created by Ziyi Wang | Monash University</p>
+            <p class="data-source">Data Sources: UNESCO World Heritage Centre & World Bank Tourism Statistics</p>
+        </div>
+    </footer>
+
+    <script>
+        // Embed all visualizations
+        const visualizations = [
+            { id: 'whc_points', file: 'whc_points.json' },
+            { id: 'barchart', file: 'barchart.json' },
+            { id: 'arrivals_brush', file: 'arrivals_brush.json' },
+            { id: 'choropleth', file: 'choropleth.json' },
+            { id: 'small_multiples', file: 'small_multiples.json' },
+            { id: 'areachart', file: 'areachart.json' },
+            { id: 'scatter', file: 'scatter.json' }
+        ];
+
+        visualizations.forEach(viz => {
+            vegaEmbed(`#${viz.id}`, viz.file, { actions: false })
+                .then(result => console.log(`${viz.id} loaded successfully`))
+                .catch(error => console.error(`Error loading ${viz.id}:`, error));
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Test if Map Data Loads",
+  "width": 900,
+  "height": 400,
+  "data": {
+    "url": "https://raw.githubusercontent.com/popozii/FIT3179Assignment2/main/ne_110m.json",
+    "format": {"type": "topojson"}
+  },
+  "mark": "geoshape",
+  "encoding": {},
+  "config": {}
+}

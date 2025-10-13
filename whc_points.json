@@ -1,0 +1,164 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 900,
+  "height": 480,
+  "title": "Global Distribution of UNESCO World Heritage Sites",
+  "projection": {"type": "equalEarth"},
+  "params": [
+    {
+      "name": "heritageType",
+      "value": "All",
+      "bind": {
+        "input": "select",
+        "options": ["All", "Cultural", "Natural", "Mixed"],
+        "name": "Filter by Site Type:"
+      }
+    },
+    {
+      "name": "select_country", 
+      "value": "All",
+      "bind": {
+        "input": "select",
+        "options": ["All", "Italy", "China", "France", "Germany", "Spain", "India", "Mexico", "United Kingdom", "United States"],
+        "name": "Highlight Country:"
+      }
+    }
+  ],
+  "layer": [
+    {
+      "data": {"sphere": true},
+      "mark": {"type": "geoshape", "fill": "#a9d1f7", "stroke": null}
+    },
+
+    {
+      "data": {"graticule": {"step": [10, 10]}},
+      "mark": {"type": "geoshape", "stroke": "white", "strokeWidth": 0.3, "fill": null}
+    },
+
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/vega/vega-datasets/master/data/world-110m.json",
+        "format": {"type": "topojson", "feature": "countries"}
+      },
+      "mark": {"type": "geoshape", "fill": "#e6e6e6", "stroke": "white"}
+    },
+
+    {
+      "data": {
+        "url": "whc-sites-2025.csv",
+        "format": {"type": "csv"}
+      },
+      "transform": [
+        {
+          "filter": "(heritageType === 'All' || datum.category === heritageType) && (select_country === 'All' || datum.states_name_en === select_country)"
+        }
+      ],
+      "mark": {
+        "type": "circle", 
+        "filled": true, 
+        "stroke": "white", 
+        "strokeWidth": 0.6,
+        "opacity": 0.9
+      },
+      "encoding": {
+        "longitude": {"field": "longitude", "type": "quantitative"},
+        "latitude": {"field": "latitude", "type": "quantitative"},
+        "color": {
+          "field": "category", 
+          "type": "nominal",
+          "title": "Type of Heritage",
+          "scale": {
+            "domain": ["Cultural", "Natural", "Mixed"],
+            "range": ["#3498db", "#27ae60", "#e67e22"]
+          }
+        },
+        "size": {
+          "condition": {
+            "test": "select_country !== 'All' && datum.states_name_en === select_country",
+            "value": 70
+          },
+          "value": 45
+        },
+        "tooltip": [
+          {"field": "name_en", "title": "Site"},
+          {"field": "states_name_en", "title": "Country"},
+          {"field": "category", "title": "Type"},
+          {"field": "date_inscribed", "title": "Year"}
+        ]
+      }
+    },
+
+    {
+      "data": {"values": [{"lon": 12.5674, "lat": 41.8719}]},
+      "mark": {
+        "type": "circle", 
+        "filled": false, 
+        "stroke": "#2a9d8f", 
+        "strokeWidth": 2, 
+        "opacity": 0.8
+      },
+      "encoding": {
+        "longitude": {"field": "lon"},
+        "latitude": {"field": "lat"},
+        "size": {"value": 14000}
+      }
+    },
+
+    {
+      "data": {"values": [{"lon": 104.1954, "lat": 35.8617}]},
+      "mark": {
+        "type": "circle", 
+        "filled": false, 
+        "stroke": "#e76f51", 
+        "strokeWidth": 2, 
+        "opacity": 0.8
+      },
+      "encoding": {
+        "longitude": {"field": "lon"},
+        "latitude": {"field": "lat"},
+        "size": {"value": 20000}
+      }
+    },
+
+    {
+      "data": {"values": [{"lon": 14.3, "lat": 44.2, "text": "Italy — many heritage sites"}]},
+      "mark": {
+        "type": "text", 
+        "fontSize": 11, 
+        "fontWeight": 600, 
+        "color": "#264653", 
+        "dx": 6, 
+        "dy": -6
+      },
+      "encoding": {
+        "longitude": {"field": "lon"},
+        "latitude": {"field": "lat"},
+        "text": {"field": "text"}
+      }
+    },
+    {
+      "data": {"values": [{"lon": 116.5, "lat": 38.5, "text": "China — large number of sites"}]},
+      "mark": {
+        "type": "text", 
+        "fontSize": 11, 
+        "fontWeight": 600, 
+        "color": "#264653", 
+        "dx": 6, 
+        "dy": -6
+      },
+      "encoding": {
+        "longitude": {"field": "lon"},
+        "latitude": {"field": "lat"},
+        "text": {"field": "text"}
+      }
+    }
+  ],
+  "config": {
+    "view": {"stroke": "transparent"},
+    "legend": {
+      "orient": "bottom",
+      "titleFontSize": 12,
+      "labelFontSize": 11
+    }
+  }
+}

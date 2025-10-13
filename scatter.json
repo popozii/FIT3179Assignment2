@@ -1,0 +1,81 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Heritage Sites Distribution by Region",
+    "subtitle": "Balance between cultural and natural heritage sites across UNESCO regions",
+    "anchor": "start",
+    "fontSize": 18,
+    "subtitleFontSize": 12,
+    "color": "#2c3e50"
+  },
+  "width": 800,
+  "height": 400,
+  "data": {
+    "url": "whc-sites-2025.csv",
+    "format": {"type": "csv"}
+  },
+  "transform": [
+    {
+      "aggregate": [
+        {"op": "count", "as": "total_sites"}
+      ],
+      "groupby": ["region_en"]
+    },
+    {
+      "calculate": "datum.cultural_count / datum.total_sites * 100",
+      "as": "cultural_percentage"
+    },
+    {
+      "calculate": "datum.natural_count / datum.total_sites * 100",
+      "as": "natural_percentage"
+    },
+    {
+      "calculate": "datum.mixed_count / datum.total_sites * 100",
+      "as": "mixed_percentage"
+    },
+    {"filter": "isValid(datum.region_en) && datum.total_sites > 0"}
+  ],
+  "mark": {
+    "type": "circle",
+    "opacity": 0.7,
+    "stroke": "white",
+    "strokeWidth": 1
+  },
+  "encoding": {
+    "x": {
+      "field": "cultural_percentage",
+      "type": "quantitative",
+      "title": "Cultural Sites (%)",
+      "scale": {"domain": [0, 100]}
+    },
+    "y": {
+      "field": "natural_percentage",
+      "type": "quantitative",
+      "title": "Natural Sites (%)",
+      "scale": {"domain": [0, 100]}
+    },
+    "size": {
+      "field": "total_sites",
+      "type": "quantitative",
+      "title": "Total Sites",
+      "scale": {"range": [50, 800]},
+      "legend": {"format": ","}
+    },
+    "color": {
+      "field": "region_en",
+      "type": "nominal",
+      "title": "UNESCO Region",
+      "scale": {"scheme": "set2"}
+    },
+    "tooltip": [
+      {"field": "region_en", "title": "Region", "type": "nominal"},
+      {"field": "total_sites", "title": "Total Sites", "type": "quantitative", "format": ","},
+      {"field": "cultural_percentage", "title": "Cultural %", "type": "quantitative", "format": ".1f"},
+      {"field": "natural_percentage", "title": "Natural %", "type": "quantitative", "format": ".1f"},
+      {"field": "mixed_percentage", "title": "Mixed %", "type": "quantitative", "format": ".1f"}
+    ]
+  },
+  "config": {
+    "view": {"stroke": null}
+  }
+}

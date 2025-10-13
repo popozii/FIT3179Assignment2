@@ -1,0 +1,143 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "vconcat": [
+    {
+      "width": 900,
+      "height": 300,
+      "title": "Global Tourist Arrivals Over Time (1995-2020)",
+      "data": {
+        "url": "https://raw.githubusercontent.com/popozii/FIT3179Assignment2/main/ST.INT.ARVL.csv",
+        "format": {"type": "csv"}
+      },
+      "transform": [
+        {
+          "fold": [
+            "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004",
+            "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014",
+            "2015", "2016", "2017", "2018", "2019", "2020"
+          ],
+          "as": ["Year", "Arrivals"]
+        },
+        {
+          "calculate": "toDate(datum.Year + '-01-01')", 
+          "as": "Year_date"
+        },
+        {
+          "calculate": "toNumber(datum.Arrivals)", 
+          "as": "Arrivals_num"
+        },
+        {
+          "filter": "isValid(datum.Arrivals_num) && datum.Arrivals_num > 0"
+        },
+        {
+          "aggregate": [
+            {"op": "sum", "field": "Arrivals_num", "as": "Total_Arrivals"}
+          ],
+          "groupby": ["Year_date"]
+        },
+        {
+          "calculate": "datum.Total_Arrivals / 1000000", 
+          "as": "Arrivals_Millions"
+        }
+      ],
+      "layer": [
+        {
+          "mark": {
+            "type": "area",
+            "fill": "#3498db",
+            "fillOpacity": 0.3
+          },
+          "encoding": {
+            "x": {
+              "field": "Year_date", 
+              "type": "temporal", 
+              "title": "Year",
+              "axis": {"format": "%Y", "grid": false},
+              "scale": {"domain": {"param": "time_brush"}}
+            },
+            "y": {
+              "field": "Arrivals_Millions", 
+              "type": "quantitative", 
+              "title": "Tourist Arrivals (Millions)",
+              "axis": {"format": "~s"}
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "line",
+            "color": "#2980b9",
+            "strokeWidth": 3
+          },
+          "encoding": {
+            "x": {"field": "Year_date", "type": "temporal"},
+            "y": {"field": "Arrivals_Millions", "type": "quantitative"}
+          }
+        }
+      ]
+    },
+    {
+      "width": 900,
+      "height": 60,
+      "title": "Brush here to filter time period ↑",
+      "data": {
+        "url": "https://raw.githubusercontent.com/popozii/FIT3179Assignment2/main/ST.INT.ARVL.csv",
+        "format": {"type": "csv"}
+      },
+      "transform": [
+        {
+          "fold": [
+            "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004",
+            "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014",
+            "2015", "2016", "2017", "2018", "2019", "2020"
+          ],
+          "as": ["Year", "Arrivals"]
+        },
+        {
+          "calculate": "toDate(datum.Year + '-01-01')", 
+          "as": "Year_date"
+        },
+        {
+          "calculate": "toNumber(datum.Arrivals)", 
+          "as": "Arrivals_num"
+        },
+        {
+          "filter": "isValid(datum.Arrivals_num) && datum.Arrivals_num > 0"
+        },
+        {
+          "aggregate": [
+            {"op": "sum", "field": "Arrivals_num", "as": "Total_Arrivals"}
+          ],
+          "groupby": ["Year_date"]
+        }
+      ],
+      "mark": "line",
+      "params": [
+        {
+          "name": "time_brush",
+          "select": {
+            "type": "interval",
+            "encodings": ["x"],
+            "mark": {"fill": "#e74c3c", "fillOpacity": 0.3, "stroke": "#e74c3c"}
+          }
+        }
+      ],
+      "encoding": {
+        "x": {
+          "field": "Year_date",
+          "type": "temporal", 
+          "axis": {"title": "", "format": "%Y"}
+        },
+        "y": {
+          "field": "Total_Arrivals",
+          "type": "quantitative",
+          "axis": {"title": "", "grid": false}
+        }
+      }
+    }
+  ],
+  "config": {
+    "view": {"stroke": "transparent"},
+    "axis": {"labelFontSize": 11, "titleFontSize": 12}
+  }
+}
