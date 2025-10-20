@@ -1,0 +1,138 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Malaysia’s Heritage Sites and Tourism Trends (1995–2020)",
+    "subtitle": "Tourism arrivals (World Bank) drive intensity of blue — heritage sites appear as they are inscribed over time",
+    "anchor": "start",
+    "fontSize": 18,
+    "subtitleFontSize": 12
+  },
+  "width": 800,
+  "height": 520,
+  "projection": {
+    "type": "mercator",
+    "center": [110, 4],
+    "scale": 2500
+  },
+  "params": [
+    {
+      "name": "selectedYear",
+      "value": 2010,
+      "bind": {
+        "input": "range",
+        "min": 1995,
+        "max": 2020,
+        "step": 1,
+        "name": "Select Year: "
+      }
+    }
+  ],
+  "layer": [
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/popozii/FIT3179Assignment2/main/malaysia_state.topojson",
+        "format": {
+          "type": "topojson",
+          "feature": "ne_10m_admin_1_states_provinces"
+        }
+      },
+      "transform": [
+        {
+          "lookup": "properties.admin",
+          "from": {
+            "data": {
+              "url": "https://raw.githubusercontent.com/popozii/FIT3179Assignment2/main/ST.INT.ARVL.csv"
+            },
+            "key": "Country Name",
+            "fields": [
+              "1995","1996","1997","1998","1999","2000","2001","2002","2003","2004",
+              "2005","2006","2007","2008","2009","2010","2011","2012","2013","2014",
+              "2015","2016","2017","2018","2019","2020"
+            ]
+          },
+          "as": [
+            "y1995","y1996","y1997","y1998","y1999","y2000","y2001","y2002","y2003","y2004",
+            "y2005","y2006","y2007","y2008","y2009","y2010","y2011","y2012","y2013","y2014",
+            "y2015","y2016","y2017","y2018","y2019","y2020"
+          ]
+        },
+        {
+          "calculate": "toNumber(datum['y' + selectedYear])",
+          "as": "Tourism"
+        }
+      ],
+      "mark": {
+        "type": "geoshape",
+        "stroke": "white",
+        "strokeWidth": 0.5
+      },
+      "encoding": {
+        "color": {
+          "field": "Tourism",
+          "type": "quantitative",
+          "scale": { "domain": [0, 27000000], "scheme": "blues" },
+          "title": "Tourist Arrivals"
+        },
+        "tooltip": [
+          { "field": "properties.name", "title": "State" },
+          { "field": "Tourism", "title": "Tourism Arrivals", "format": "," }
+        ]
+      }
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/popozii/FIT3179Assignment2/main/whc-sites-2025.csv"
+      },
+      "transform": [
+        { "filter": "datum.states_name_en == 'Malaysia'" },
+        {
+          "calculate": "toNumber(substring(datum.date_inscribed, 0, 4))",
+          "as": "year_inscribed"
+        },
+        { "filter": "datum.year_inscribed <= selectedYear" }
+      ],
+      "mark": {
+        "type": "circle",
+        "opacity": 0.9,
+        "stroke": "white",
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "longitude": { "field": "longitude", "type": "quantitative" },
+        "latitude": { "field": "latitude", "type": "quantitative" },
+        "size": { "value": 200 },
+        "color": {
+          "field": "category",
+          "type": "nominal",
+          "scale": {
+            "domain": ["Cultural", "Natural", "Mixed"],
+            "range": ["#1f77b4", "#2ca02c", "#ff7f0e"]
+          },
+          "title": "Heritage Type"
+        },
+        "tooltip": [
+          { "field": "name", "title": "Heritage Site" },
+          { "field": "category", "title": "Type" },
+          { "field": "year_inscribed", "title": "Inscribed Year" }
+        ]
+      }
+    },
+    {
+      "transform": [{ "calculate": "selectedYear", "as": "year" }],
+      "mark": {
+        "type": "text",
+        "x": 760,
+        "y": 40,
+        "fontSize": 26,
+        "fontWeight": "bold",
+        "align": "right",
+        "color": "#333"
+      },
+      "encoding": { "text": { "field": "year" } }
+    }
+  ],
+  "config": {
+    "view": { "stroke": null },
+    "background": "transparent"
+  }
+}
