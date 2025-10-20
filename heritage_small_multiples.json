@@ -1,0 +1,197 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Comprehensive UNESCO World Heritage Analysis (2025)",
+    "subtitle": "Regional composition, total sites by region, and top contributing countries",
+    "anchor": "start",
+    "fontSize": 24,
+    "subtitleFontSize": 14,
+    "color": "#2d3748",
+    "subtitleColor": "#718096",
+    "fontWeight": "bold"
+  },
+  "width": 1200,
+  "height": 700,
+  "data": {
+    "url": "https://raw.githubusercontent.com/popozii/FIT3179Assignment2/main/whc-sites-2025.csv"
+  },
+  "transform": [
+    {
+      "filter": "isValid(datum.region_en) && isValid(datum.category) && isValid(datum.states_name_en)"
+    },
+    {
+      "aggregate": [{"op": "count", "as": "site_count"}],
+      "groupby": ["region_en", "category", "states_name_en"]
+    },
+    {
+      "joinaggregate": [{"op": "sum", "field": "site_count", "as": "region_total"}],
+      "groupby": ["region_en"]
+    },
+    {
+      "joinaggregate": [{"op": "sum", "field": "site_count", "as": "global_total"}]
+    },
+    {
+      "calculate": "datum.region_total / datum.global_total",
+      "as": "region_share"
+    },
+    {
+      "window": [{"op": "rank", "as": "country_rank"}],
+      "sort": [{"field": "site_count", "order": "descending"}],
+      "groupby": ["region_en"]
+    },
+    {"filter": "datum.country_rank <= 1"}
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "cornerRadiusTopLeft": 6,
+        "cornerRadiusTopRight": 6,
+        "opacity": 0.9,
+        "stroke": "white",
+        "strokeWidth": 1.5,
+        "cursor": "pointer"
+      },
+      "encoding": {
+        "x": {
+          "field": "region_en",
+          "type": "nominal",
+          "title": null,
+          "axis": {
+            "labelAngle": -45,
+            "labelFontSize": 11,
+            "labelColor": "#4a5568"
+          },
+          "sort": {"field": "region_total", "order": "descending"}
+        },
+        "y": {
+          "aggregate": "sum",
+          "field": "site_count",
+          "title": "Number of Heritage Sites",
+          "axis": {
+            "grid": true,
+            "gridColor": "#f8fafc",
+            "labelFontSize": 11
+          }
+        },
+        "color": {
+          "field": "category",
+          "type": "nominal",
+          "title": "Heritage Type",
+          "scale": {
+            "domain": ["Cultural", "Natural", "Mixed"],
+            "range": ["#fbbf24", "#f59e0b", "#d97706"]
+          },
+          "legend": {
+            "orient": "top",
+            "direction": "horizontal",
+            "columns": 3,
+            "labelFontSize": 12,
+            "titleFontSize": 13
+          }
+        },
+        "tooltip": [
+          {"field": "region_en", "title": "Region"},
+          {"field": "category", "title": "Heritage Type"},
+          {"aggregate": "sum", "field": "site_count", "title": "Total Sites"},
+          {"field": "region_share", "title": "Global Share", "format": ".1%"},
+          {"field": "states_name_en", "title": "Top Country"},
+          {"field": "site_count", "title": "Sites from Top Country"}
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 120,
+        "opacity": 0.95,
+        "stroke": "#7c2d12",
+        "strokeWidth": 1.5
+      },
+      "encoding": {
+        "x": {"field": "region_en", "type": "nominal"},
+        "y": {"aggregate": "sum", "field": "site_count"},
+        "color": {"value": "#fef3c7"},
+        "stroke": {"value": "#d97706"},
+        "tooltip": [
+          {"field": "states_name_en", "title": "Top Contributing Country"},
+          {"field": "site_count", "title": "Sites"}
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "dy": -35,
+        "fontSize": 10,
+        "fontWeight": "bold",
+        "color": "#92400e"
+      },
+      "encoding": {
+        "x": {"field": "region_en", "type": "nominal"},
+        "y": {"aggregate": "sum", "field": "site_count"},
+        "text": {"field": "states_name_en"}
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 8,
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "color": "#7c2d12"
+      },
+      "encoding": {
+        "x": {"field": "region_en", "type": "nominal"},
+        "y": {"aggregate": "sum", "field": "site_count"},
+        "text": {"aggregate": "sum", "field": "site_count", "format": ".0f"}
+      }
+    },
+    {
+      "transform": [{"aggregate": [{"op": "mean", "field": "site_count", "as": "avg_sites"}]}],
+      "mark": {
+        "type": "rule",
+        "color": "#dc2626",
+        "strokeDash": [5, 3],
+        "strokeWidth": 2,
+        "opacity": 0.7
+      },
+      "encoding": {
+        "y": {"field": "avg_sites", "type": "quantitative"}
+      }
+    },
+    {
+      "transform": [{"aggregate": [{"op": "mean", "field": "site_count", "as": "avg_sites"}]}],
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "dx": -10,
+        "dy": -5,
+        "fontSize": 10,
+        "fontWeight": "bold",
+        "color": "#dc2626"
+      },
+      "encoding": {
+        "x": {"value": "Europe and North America"},
+        "y": {"field": "avg_sites", "type": "quantitative"},
+        "text": {"value": "Global Average"}
+      }
+    }
+  ],
+  "config": {
+    "view": {"stroke": "transparent"},
+    "background": "transparent",
+    "axis": {
+      "domain": false,
+      "grid": true,
+      "gridColor": "#f8fafc"
+    },
+    "legend": {
+      "orient": "top",
+      "direction": "horizontal",
+      "columns": 3
+    }
+  }
+}
