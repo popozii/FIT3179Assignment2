@@ -1,0 +1,137 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Do More Heritage Sites Bring More Tourists? (2019)",
+    "fontSize": 18,
+    "fontWeight": "bold",
+    "anchor": "start",
+    "subtitle": "Comparing international tourist arrivals with UNESCO heritage richness by country"
+  },
+  "width": 700,
+  "height": 420,
+  "data": {
+    "values": [
+      {"country": "France", "tourists": 89.4, "sites": 52, "region": "Europe and North America"},
+      {"country": "Spain", "tourists": 83.5, "sites": 50, "region": "Europe and North America"},
+      {"country": "United States", "tourists": 79.3, "sites": 25, "region": "Europe and North America"},
+      {"country": "China", "tourists": 65.7, "sites": 57, "region": "Asia and the Pacific"},
+      {"country": "Italy", "tourists": 64.5, "sites": 59, "region": "Europe and North America"},
+      {"country": "Turkey", "tourists": 51.2, "sites": 19, "region": "Europe and North America"},
+      {"country": "Mexico", "tourists": 45.0, "sites": 35, "region": "Latin America and the Caribbean"},
+      {"country": "Germany", "tourists": 39.6, "sites": 52, "region": "Europe and North America"},
+      {"country": "Thailand", "tourists": 39.8, "sites": 7, "region": "Asia and the Pacific"},
+      {"country": "United Kingdom", "tourists": 39.2, "sites": 33, "region": "Europe and North America"},
+      {"country": "Japan", "tourists": 31.9, "sites": 25, "region": "Asia and the Pacific"},
+      {"country": "Malaysia", "tourists": 26.1, "sites": 4, "region": "Asia and the Pacific"},
+      {"country": "India", "tourists": 17.9, "sites": 42, "region": "Asia and the Pacific"},
+      {"country": "Brazil", "tourists": 6.4, "sites": 23, "region": "Latin America and the Caribbean"},
+      {"country": "Egypt", "tourists": 13.0, "sites": 7, "region": "Arab States"},
+      {"country": "South Africa", "tourists": 15.5, "sites": 10, "region": "Africa"}
+    ]
+  },
+  "transform": [
+    {
+      "window": [{"op": "rank", "as": "tourism_rank"}],
+      "sort": [{"field": "tourists", "order": "descending"}]
+    },
+    {
+      "calculate": "datum.tourism_rank <= 8 ? datum.country : ''",
+      "as": "country_label"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "circle",
+        "opacity": 0.78,
+        "filled": true,
+        "stroke": "white",
+        "strokeWidth": 1,
+        "size": 150
+      },
+      "encoding": {
+        "x": {
+          "field": "tourists",
+          "type": "quantitative",
+          "title": "Tourist Arrivals (Millions, 2019)",
+          "scale": {"nice": true}
+        },
+        "y": {
+          "field": "sites",
+          "type": "quantitative",
+          "title": "Number of UNESCO Heritage Sites",
+          "scale": {"nice": true}
+        },
+        "color": {
+          "field": "region",
+          "type": "nominal",
+          "title": "UNESCO Region",
+          "scale": {
+            "domain": [
+              "Europe and North America",
+              "Asia and the Pacific", 
+              "Latin America and the Caribbean",
+              "Africa",
+              "Arab States"
+            ],
+            "range": ["#3b82f6", "#ef4444", "#10b981", "#f59e0b", "#8b5cf6"]
+          },
+          "legend": {
+            "orient": "bottom",
+            "titleFontSize": 12,
+            "labelFontSize": 11,
+            "columns": 3
+          }
+        },
+        "size": {
+          "field": "sites",
+          "type": "quantitative",
+          "scale": {"range": [100, 500]},
+          "legend": null
+        },
+        "tooltip": [
+          {"field": "country", "title": "Country"},
+          {"field": "region", "title": "Region"},
+          {"field": "sites", "title": "Heritage Sites"},
+          {"field": "tourists", "title": "Tourists (Millions)", "format": ".1f"},
+          {"field": "tourism_rank", "title": "Tourism Rank"}
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 8,
+        "fontSize": 10,
+        "fontWeight": "bold",
+        "color": "#1e293b"
+      },
+      "transform": [{"filter": "datum.country_label !== ''"}],
+      "encoding": {
+        "x": {"field": "tourists"},
+        "y": {"field": "sites"},
+        "text": {"field": "country_label"}
+      }
+    },
+    {
+      "transform": [{"regression": "sites", "on": "tourists", "method": "linear"}],
+      "mark": {
+        "type": "line",
+        "color": "#dc2626",
+        "strokeWidth": 2,
+        "strokeDash": [4, 4],
+        "opacity": 0.7
+      },
+      "encoding": {
+        "x": {"field": "tourists"},
+        "y": {"field": "sites"}
+      }
+    }
+  ],
+  "config": {
+    "view": {"stroke": "transparent"},
+    "background": "transparent"
+  }
+}
