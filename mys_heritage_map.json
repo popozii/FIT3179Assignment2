@@ -1,18 +1,12 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": {
-    "text": "Malaysia’s Heritage Sites and Tourism Trends (1995–2020)",
-    "subtitle": "Tourism arrivals (World Bank) drive intensity of blue — heritage sites appear as they are inscribed over time",
-    "anchor": "start",
-    "fontSize": 18,
-    "subtitleFontSize": 12
-  },
-  "width": 800,
-  "height": 520,
+
+  "width": 770,
+  "height": 400,
   "projection": {
     "type": "mercator",
     "center": [110, 4],
-    "scale": 2500
+    "scale": 1800
   },
   "params": [
     {
@@ -28,6 +22,42 @@
     }
   ],
   "layer": [
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/popozii/FIT3179-Data-Visualisation-2/refs/heads/main/js/ne_110m%20(2).json",
+        "format": {
+          "type": "topojson",
+          "feature": "ne_110m_graticules_15"
+        }
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "none",
+        "stroke": "#cfcfcf",
+        "strokeWidth": 0.6,
+        "opacity": 0.6
+      }
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/EeGwen/FIT3179-Data-Visualisation-2/refs/heads/main/js/ne_110m%20(2).json",
+        "format": {
+          "type": "topojson",
+          "feature": "ne_110m_admin_0_countries"
+        }
+      },
+      "transform": [
+        {
+          "filter": "datum.properties.ADMIN == 'Malaysia' || datum.properties.ADMIN == 'Indonesia' || datum.properties.ADMIN == 'Thailand' || datum.properties.ADMIN == 'Singapore' || datum.properties.ADMIN == 'Brunei' || datum.properties.ADMIN == 'Philippines' || datum.properties.ADMIN == 'Vietnam'"
+        }
+      ],
+      "mark": {
+        "type": "geoshape",
+        "stroke": "white",
+        "strokeWidth": 0.5,
+        "fill": "#f3f4f7"
+      }
+    },
     {
       "data": {
         "url": "https://raw.githubusercontent.com/popozii/FIT3179Assignment2/main/malaysia_state.topojson",
@@ -95,12 +125,12 @@
         "type": "circle",
         "opacity": 0.9,
         "stroke": "white",
-        "strokeWidth": 1
+        "strokeWidth": 1,
+        "size": 200
       },
       "encoding": {
         "longitude": { "field": "longitude", "type": "quantitative" },
         "latitude": { "field": "latitude", "type": "quantitative" },
-        "size": { "value": 200 },
         "color": {
           "field": "category",
           "type": "nominal",
@@ -118,6 +148,157 @@
       }
     },
     {
+      "data": {
+        "values": [
+          {
+            "name": "Gunung Mulu National Park",
+            "site_lon": 114.93,
+            "site_lat": 4.13,
+            "label_lon": 116.2,
+            "label_lat": 3.5,
+            "year": 2000,
+            "type": "Natural"
+          },
+          {
+            "name": "Kinabalu Park", 
+            "site_lon": 116.55,
+            "site_lat": 6.08,
+            "label_lon": 118.0,
+            "label_lat": 6.7,
+            "year": 2000,
+            "type": "Natural"
+          },
+          {
+            "name": "Melaka and George Town",
+            "site_lon": 102.25,
+            "site_lat": 2.19,
+            "label_lon": 100.2,
+            "label_lat": 1.2,
+            "year": 2008,
+            "type": "Cultural"
+          },
+          {
+            "name": "Archaeological Heritage of the Lenggong Valley",
+            "site_lon": 100.97,
+            "site_lat": 5.07,
+            "label_lon": 98.8,
+            "label_lat": 6.8,
+            "year": 2012,
+            "type": "Cultural"
+          }
+        ]
+      },
+      "transform": [{ "filter": "datum.year <= selectedYear" }],
+      "mark": {
+        "type": "rule",
+        "stroke": "#718096",
+        "strokeWidth": 1.5,
+        "opacity": 0.8
+      },
+      "encoding": {
+        "longitude": { "field": "site_lon", "type": "quantitative" },
+        "latitude": { "field": "site_lat", "type": "quantitative" },
+        "longitude2": { "field": "label_lon", "type": "quantitative" },
+        "latitude2": { "field": "label_lat", "type": "quantitative" }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "name": "Gunung Mulu National Park",
+            "label_lon": 116.2,
+            "label_lat": 3.5,
+            "year": 2000,
+            "type": "Natural"
+          },
+          {
+            "name": "Kinabalu Park",
+            "label_lon": 118.0,
+            "label_lat": 6.7,
+            "year": 2000,
+            "type": "Natural"
+          },
+          {
+            "name": "Melaka and George Town",
+            "label_lon": 100.2,
+            "label_lat": 1.2,
+            "year": 2008,
+            "type": "Cultural"
+          },
+          {
+            "name": "Archaeological Heritage of the Lenggong Valley",
+            "label_lon": 98.8,
+            "label_lat": 6.8,
+            "year": 2012,
+            "type": "Cultural"
+          }
+        ]
+      },
+      "transform": [{ "filter": "datum.year <= selectedYear" }],
+      "mark": {
+        "type": "text",
+        "dy": 0,
+        "dx": 0,
+        "fontSize": 13,
+        "fontWeight": "bold",
+        "color": "#1a365d",
+        "align": "left"
+      },
+      "encoding": {
+        "longitude": { "field": "label_lon", "type": "quantitative" },
+        "latitude": { "field": "label_lat", "type": "quantitative" },
+        "text": { "field": "name" }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "label_lon": 116.2,
+            "label_lat": 3.5,
+            "year": 2000,
+            "type": "Natural"
+          },
+          {
+            "label_lon": 118.0,
+            "label_lat": 6.7,
+            "year": 2000,
+            "type": "Natural"
+          },
+          {
+            "label_lon": 100.2,
+            "label_lat": 1.2,
+            "year": 2008,
+            "type": "Cultural"
+          },
+          {
+            "label_lon": 98.8,
+            "label_lat": 6.8,
+            "year": 2012,
+            "type": "Cultural"
+          }
+        ]
+      },
+      "transform": [{ "filter": "datum.year <= selectedYear" }],
+      "mark": {
+        "type": "text",
+        "dy": 15,
+        "dx": 0,
+        "fontSize": 11,
+        "fontWeight": "normal",
+        "color": "#4a5568",
+        "align": "left",
+        "fontStyle": "italic"
+      },
+      "encoding": {
+        "longitude": { "field": "label_lon", "type": "quantitative" },
+        "latitude": { "field": "label_lat", "type": "quantitative" },
+        "text": { "field": "type" }
+      }
+    },
+    {
+      "data": {"values": [{}]},
       "transform": [{ "calculate": "selectedYear", "as": "year" }],
       "mark": {
         "type": "text",
