@@ -38,66 +38,283 @@
 
   <div class="container">
 
+    <!-- Overview Section -->
     <section class="card">
       <h2 class="chart-title">Global Heritage Conservation & Tourism Dynamics</h2>
       <p class="chart-description">This interactive narrative visualizes the global geography of UNESCO World Heritage Sites, exploring how heritage preservation connects with the evolving patterns of international tourism.</p>
-      <div class="annotation"><strong>Data Sources:</strong> UNESCO World Heritage Centre (2025) & World Bank Tourism Data (1995–2020).<br><strong>Features:</strong> Interactive timelines, linked views, and detailed tooltips.</div>
+      <div class="annotation" style="background: #f0f9ff; border-left: 4px solid #3b82f6;">
+        <strong>📊 Data Sources:</strong> UNESCO World Heritage Centre (2025) & World Bank Tourism Data (1995–2020).<br>
+        <strong>🔍 Features:</strong> Interactive timelines, linked views, and detailed tooltips.
+      </div>
     </section>
 
-    <!-- Distribution -->
-    <div class="section-divider" id="distribution"><h2>Global Heritage Overview</h2></div>
+    <!-- Distribution Section -->
+    <div class="section-divider" id="distribution"><h2>Heritage Overview</h2></div>
 
     <section class="card">
-      <h3 class="chart-title">World Heritage Sites Distribution</h3>
+      <h3 class="chart-title">Global Heritage Sites Distribution</h3>
       <p class="chart-description">Each circle represents a UNESCO World Heritage Site, sized and colored by category. Hover to reveal each site's inscription year and heritage type.</p>
+      
       <div id="whc_points" class="visualization" style="width:100%;max-width:1100px;height:520px;"></div>
+
+      <div class="insights-horizontal">
+        <div class="insight-card">
+          <h3>🏛️ Cultural Dominance in Europe</h3>
+          <p><strong>European nations</strong> show the highest concentration of <strong>cultural heritage sites</strong>, reflecting centuries of architectural and historical preservation.</p>
+        </div>
+        <div class="insight-card">
+          <h3>🌿 Natural Sites in Remote Regions</h3>
+          <p><strong>Natural heritage sites</strong> cluster in <strong>biodiversity hotspots</strong> and protected wilderness areas far from urban centers.</p>
+        </div>
+        <div class="insight-card">
+          <h3>🎛️ Interactive Exploration Tools</h3>
+          <p>Use the <strong>year slider</strong> to track heritage growth and <strong>filter by continent</strong> for regional focus.</p>
+        </div>
+      </div>
+
+      <div class="insights-horizontal" style="margin-top: 1.5rem;">
+        <div class="insight-card">
+          <h3>🌊 Marine Heritage Significance</h3>
+          <p>The <strong>French Austral Lands and Sea</strong> represents important <strong>marine protected areas</strong> in the Southern Ocean.</p>
+        </div>
+        <div class="insight-card">
+          <h3>🗺️ Geographic Patterns</h3>
+          <p><strong>Cultural sites dominate</strong> in historically dense regions while <strong>natural sites</strong> protect remote ecosystems.</p>
+        </div>
+        <div class="insight-card">
+          <h3>📅 Heritage Recognition Timeline</h3>
+          <p>Adjusting the <strong>year filter</strong> reveals how global heritage recognition has expanded progressively.</p>
+        </div>
+      </div>
     </section>
 
-    <!-- Heritage Type by Region -->
-    <section class="card">
-      <h3 class="chart-title">Heritage Type Composition by Region</h3>
-      <p class="chart-description">Explore the distribution of cultural, natural, and mixed heritage sites across different regions, with top contributing countries highlighted.</p>
-      <div id="heritage_small_multiples" class="visualization" style="width:100%;height:480px;"></div>
-    </section>
+   <!-- Heritage Type by Region -->
+<section class="card">
+  <h3 class="chart-title">Heritage Type Composition by Region</h3>
+  <p class="chart-description">Explore how cultural, natural, and mixed sites vary across UNESCO regions, revealing distinct preservation priorities.</p>
 
-    <!-- Temporal -->
+  <div class="chart-with-insights" style="display:flex; gap:1.5rem; margin-bottom: 1.5rem;">
+    <div id="heritage_small_multiples" class="visualization" style="width:75%;height:420px;"></div>
+    
+    <div class="insights-vertical" style="display:flex; flex-direction:column; gap:1rem; width:25%;">
+      <div class="insight-card">
+        <h3>🏛️ Europe Leads</h3>
+        <p><span class="highlight">Cultural heritage</span> dominates Europe's historical identity with dense monument concentration.</p>
+      </div>
+      <div class="insight-card">
+        <h3>🌿 Natural Focus</h3>
+        <p>Africa and Oceania show strong <span class="highlight">natural site</span> presence, protecting unique ecosystems.</p>
+      </div>
+    </div>
+  </div>
+
+ 
+  <div class="insights-horizontal" style="display:grid; grid-template-columns: 1fr 1fr; gap:1.5rem;">
+    <div class="insight-card">
+      <h3>⚖️ Mixed Sites Rare</h3>
+      <p><strong>Mixed listings</strong> remain minimal globally, highlighting the challenge of dual-criteria recognition.</p>
+    </div>
+    <div class="insight-card">
+      <h3>🌍 Regional Reflection</h3>
+      <p>Heritage type reflects regional <span class="highlight">cultural identity</span> and ecological significance.</p>
+    </div>
+  </div>
+</section>
+
+    <!-- Temporal Section -->
     <div class="section-divider" id="temporal"><h2>Temporal Patterns</h2></div>
 
     <section class="card">
       <h3 class="chart-title">Global Tourism Trends (1995–2020)</h3>
-      <p class="chart-description">Track the evolution of international tourist arrivals over time, with interactive brushing for detailed period analysis.</p>
+      <p class="chart-description">Track the evolution of international tourist arrivals over time, with interactive brushing for detailed period analysis of global tourism dynamics.</p>
+
       <div id="arrivals_brush" class="visualization" style="width:100%;height:280px;"></div>
+
+      <div class="insights-horizontal" style="margin-top: 1.5rem;">
+        <div class="insight-card">
+          <h3>📈 1995–2008: Steady Growth</h3>
+          <p>Gradual rise backed by expanding global middle class and stable economic conditions worldwide.</p>
+        </div>
+        <div class="insight-card">
+          <h3>📉 2008 Crisis Impact</h3>
+          <p>Global financial collapse triggers brief but sharp downturn in international travel patterns.</p>
+        </div>
+        <div class="insight-card">
+          <h3>🚀 2010–2019 Boom Era</h3>
+          <p>Rapid growth fueled by digital booking platforms, low-cost airlines, and rising global mobility.</p>
+        </div>
+      </div>
+
+      <div class="insights-horizontal" style="margin-top: 1rem;">
+        <div class="insight-card">
+          <h3>🦠 2020 COVID Collapse</h3>
+          <p>Border closures and travel restrictions lead to unprecedented global tourism shutdown.</p>
+        </div>
+        <div class="insight-card">
+          <h3>🔍 Zoom Into Change</h3>
+          <p>Use brushing to explore decline and recovery dynamics across specific time periods.</p>
+        </div>
+        <div class="insight-card">
+          <h3>📊 Data Resilience</h3>
+          <p>Tourism demonstrates recovery capacity post-crisis, though COVID impact was uniquely severe.</p>
+        </div>
+      </div>
     </section>
 
-    <!--Growth of Heritage Sites -->
+    <!-- Growth of Heritage Sites -->
     <section class="card">
-      <h3 class="chart-title">Growth of World Heritage Sites Over Time</h3>
-      <p class="chart-description">Cumulative growth of UNESCO World Heritage Sites since 1978, showing the expanding global recognition of cultural and natural heritage.</p>
+      <h3 class="chart-title">Evolution of Global Heritage Recognition (1978-2025)</h3>
+      <p class="chart-description">Track the cumulative growth of UNESCO World Heritage Sites across cultural, natural, and mixed categories, revealing patterns in global heritage preservation efforts.</p>
+      
       <div id="areachart" class="visualization" style="width:100%;height:380px;"></div>
+      
+      <div class="insights-horizontal" style="margin-top: 1.5rem;">
+        <div class="insight-card">
+          <h3>📈 Cultural Dominance</h3>
+          <p><strong>Cultural sites lead consistently</strong>, representing over 75% of all inscriptions, reflecting global emphasis on preserving human achievements.</p>
+        </div>
+        <div class="insight-card">
+          <h3>🌿 Natural Heritage Growth</h3>
+          <p><strong>Steady natural site expansion</strong> shows increasing recognition of biodiversity conservation, with acceleration in the 2000s.</p>
+        </div>
+        <div class="insight-card">
+          <h3>⚖️ Mixed Sites Rarity</h3>
+          <p><strong>Mixed heritage remains scarce</strong> (under 5% of total), highlighting the challenge of meeting dual criteria.</p>
+        </div>
+      </div>
+
+      <div class="insights-horizontal" style="margin-top: 1rem;">
+        <div class="insight-card">
+          <h3>🔄 Inscription Patterns</h3>
+          <p><strong>Accelerated growth post-1990s</strong> correlates with increased global heritage awareness and UNESCO's expanded membership.</p>
+        </div>
+        <div class="insight-card">
+          <h3>🌍 Regional Representation</h3>
+          <p><strong>European cultural dominance</strong> is evident early, while recent decades show better global distribution.</p>
+        </div>
+        <div class="insight-card">
+          <h3>📊 Conservation Milestones</h3>
+          <p><strong>Key UNESCO initiatives</strong> like the 1992 Cultural Landscape category drove diversification beyond monuments.</p>
+        </div>
+      </div>
+
+      <div class="annotation" style="margin-top: 1.5rem; background: #f8f9fa; padding: 1rem; border-left: 4px solid #3498db;">
+        <strong>📅 Historical Context:</strong> 
+        <ul style="margin: 0.5rem 0 0 1rem;">
+          <li><strong>1978-1989:</strong> Foundation years with selective, predominantly European cultural site recognition</li>
+          <li><strong>1990-1999:</strong> Expansion era with increased natural site designations and global reach</li>
+          <li><strong>2000-2010:</strong> Rapid growth period with emerging economy participation and site type diversification</li>
+          <li><strong>2011-2025:</strong> Maturation phase focusing on underrepresented regions and thematic gaps</li>
+        </ul>
+      </div>
     </section>
 
-    <!-- Relationship -->
+    <!-- Relationship Section -->
     <div class="section-divider" id="relationship"><h2>Tourism–Heritage Relationships</h2></div>
+    
     <section class="card">
       <h3 class="chart-title">Correlation Between Tourism and Heritage Sites</h3>
-      <p class="chart-description">Explore the relationship between the number of heritage sites and international tourist arrivals across different countries.</p>
+      <p class="chart-description">Explore the relationship between the number of heritage sites and international tourist arrivals across different countries, revealing patterns in cultural appeal.</p>
+      
       <div id="scatter_tourism_heritage" class="visualization" style="width:100%;height:480px;"></div>
+      
+      <div class="insights-horizontal" style="margin-top: 1.5rem;">
+        <div class="insight-card">
+          <h3>🏆 High Tourism Leaders</h3>
+          <p>Countries such as <strong>France, Spain, and the United States</strong> rank highest in tourist arrivals and possess significant heritage sites, reflecting strong global cultural appeal.</p>
+        </div>
+        <div class="insight-card">
+          <h3>💎 Heritage-Rich, Moderate Tourism</h3>
+          <p>Nations like <strong>Italy and China</strong> have high heritage site counts but comparatively moderate tourism volumes, indicating potential for further growth.</p>
+        </div>
+        <div class="insight-card">
+          <h3>📈 Positive Correlation</h3>
+          <p>The <strong>regression line indicates a clear positive relationship</strong>—countries with more heritage sites generally attract more international tourists.</p>
+        </div>
+      </div>
+
+      <div class="insights-horizontal" style="margin-top: 1rem;">
+        <div class="insight-card">
+          <h3>🌍 Regional Influence</h3>
+          <p><strong>European countries dominate</strong> both tourism numbers and heritage density, linking historical richness with sustained tourism demand.</p>
+        </div>
+        <div class="insight-card">
+          <h3>🚀 Outliers & Growth Potential</h3>
+          <p>Countries such as <strong>India and Brazil</strong> host numerous heritage sites but show lower tourism levels, presenting development opportunities.</p>
+        </div>
+        <div class="insight-card">
+          <h3>🧲 Heritage as Tourist Driver</h3>
+          <p>The trend suggests that <strong>recognition of cultural and natural heritage contributes to international visibility</strong> and acts as a magnet for global tourists.</p>
+        </div>
+      </div>
     </section>
 
-    <!-- Malaysia -->
-    <div class="section-divider" id="malaysia"><h2>Malaysia Focus</h2></div>
-    <section class="card">
-      <h3 class="chart-title">UNESCO Sites within Malaysia</h3>
-      <p class="chart-description">Geographic distribution of Malaysia's UNESCO World Heritage Sites, showcasing the country's rich cultural and natural heritage.</p>
-      <div id="mys_heritage_map" class="visualization" style="width:100%;max-width:600px;height:480px;"></div>
-    </section>
+    <!-- Malaysia Section -->
+   <!-- Malaysia Section -->
+<div class="section-divider" id="malaysia"><h2>Malaysia Focus</h2></div>
 
-    <!-- About -->
+<section class="card">
+  <h3 class="chart-title">UNESCO Sites within Malaysia</h3>
+  <p class="chart-description">Geographic distribution of Malaysia's UNESCO World Heritage Sites, showcasing the country's rich cultural and natural heritage across peninsular and Borneo regions.</p>
+  
+  <!-- 地图说明在上方 -->
+  <div class="annotation" style="margin-bottom: 1.5rem; background: #f0f7ff; padding: 1rem; border-left: 4px solid #10b981;">
+    <strong>🗺️ Map Guide:</strong> 
+    <ul style="margin: 0.5rem 0 0 1rem;">
+      <li><strong>Blue intensity</strong> indicates tourism arrivals across states</li>
+      <li><strong>Colored circles</strong> mark UNESCO heritage site locations</li>
+      <li><strong>Year slider</strong> shows sites as they were inscribed over time</li>
+    </ul>
+  </div>
+
+  <div style="display: flex; justify-content: center; margin: 1.5rem 0;">
+    <div id="mys_heritage_map" class="visualization" style="width:100%;max-width:800px;height:500px;"></div>
+  </div>
+
+  <div class="insights-horizontal" style="margin-top: 1.5rem;">
+    <div class="insight-card">
+      <h3>🏞️ Natural Heritage (2000)</h3>
+      <p>The <strong>2000 inscriptions</strong> of Kinabalu Park and Gunung Mulu marked international recognition of Borneo's unique biodiversity and geological significance.</p>
+    </div>
+    <div class="insight-card">
+      <h3>🏛️ Cultural Heritage (2008)</h3>
+      <p><strong>Melaka and George Town's 2008 listing</strong> celebrated centuries of trading history and multicultural urban heritage, boosting cultural tourism.</p>
+    </div>
+    <div class="insight-card">
+      <h3>🏺 Archaeological Heritage (2012)</h3>
+      <p>The <strong>2012 Lenggong Valley recognition</strong> highlighted ancient human settlement, completing Malaysia's diverse heritage portfolio.</p>
+    </div>
+  </div>
+】
+  <div class="annotation" style="margin-top: 1.5rem; background: #fdf9f3; padding: 1rem; border-left: 4px solid #e9b15c;">
+    <strong>🌏 Regional Balance:</strong> Malaysia's four UNESCO sites reflect strategic geographic distribution—two in Borneo (natural) and two in Peninsular Malaysia (cultural), showcasing the nation's diverse heritage assets across its territories.
+  </div>
+</section>
+    <!-- About Section -->
     <div class="section-divider" id="about"><h2>Conservation & Tourism Outlook</h2></div>
+    
     <section class="card">
-      <h3 class="chart-title">Sustainable Balance</h3>
-      <p class="chart-description">Heritage recognition encourages tourism growth, but sustainable management remains essential to protect authenticity and avoid over-tourism.</p>
-      <div class="annotation"><strong>Takeaway:</strong> The balance between tourism and heritage conservation defines the future of sustainable cultural preservation.</div>
+      <h3 class="chart-title">Sustainable Balance for Future Generations</h3>
+      <p class="chart-description">Heritage recognition encourages tourism growth, but sustainable management remains essential to protect authenticity, preserve cultural integrity, and avoid over-tourism impacts.</p>
+      
+      <div class="insights-horizontal">
+        <div class="insight-card">
+          <h3>⚖️ Balanced Development</h3>
+          <p><strong>Tourism revenue supports conservation</strong> while controlled visitor numbers prevent site degradation, creating a sustainable preservation cycle.</p>
+        </div>
+        <div class="insight-card">
+          <h3>🌱 Community Engagement</h3>
+          <p><strong>Local community involvement</strong> in heritage management ensures cultural authenticity and distributes tourism benefits equitably.</p>
+        </div>
+        <div class="insight-card">
+          <h3>🔮 Future Challenges</h3>
+          <p><strong>Climate change and mass tourism</strong> present ongoing threats to heritage sites, requiring adaptive management strategies.</p>
+        </div>
+      </div>
+
+      <div class="annotation" style="margin-top: 1.5rem; background: #fff7ed; padding: 1rem; border-left: 4px solid #f59e0b;">
+        <strong>🎯 Key Insight:</strong> The balance between tourism development and heritage conservation defines the future of sustainable cultural preservation. Strategic management can transform heritage sites from vulnerable treasures into resilient assets for future generations.
+      </div>
     </section>
   </div>
 
@@ -107,6 +324,7 @@
     <p><strong>Author:</strong> Ziyi Wang</p>
     <p><strong>Date:</strong> 21 October 2025</p>
     <p><strong>Course:</strong> FIT3179 Data Visualization 2</p>
+    
     <h2 class="footer-heading" style="margin-top:20px;">Data Sources</h2>
     <ul class="data-source-link">
       <li><a href="https://whc.unesco.org/en/list/" target="_blank">UNESCO World Heritage Centre</a></li>
