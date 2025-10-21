@@ -1,166 +1,469 @@
-/* ---------- Base ---------- */
-body {
-  font-family: "Inter", sans-serif;
-  background: #faf8f5;
-  color: #2c2c2c;
-  line-height: 1.7;
+/* ---------- Base & Reset ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* ---------- Navbar ---------- */
+body {
+  font-family: "Inter", sans-serif;
+  background: #fefcf8;
+  color: #2c2c2c;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ---------- Navigation ---------- */
 nav {
   position: fixed;
-  top: 0; left: 0; right: 0;
-  background: rgba(104, 71, 34, 0.95);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
-  display: flex;
-  justify-content: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(104, 71, 34, 0.98);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.15);
   z-index: 1000;
+  padding: 0 20px;
 }
+
 nav ul {
   list-style: none;
   display: flex;
-  padding: 14px 20px;
-  gap: 28px;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  height: 60px;
+  margin: 0;
 }
+
 nav ul li a {
   color: #fff;
   text-decoration: none;
-  font-weight: 600;
-  letter-spacing: 0.4px;
-  transition: color 0.2s ease;
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
 }
-nav ul li a:hover { color: #f4a261; }
 
-/* ---------- Hero ---------- */
+nav ul li a:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #f8d7b4;
+}
+
+/* ---------- Hero Section ---------- */
 header.site-hero {
-  padding: 130px 30px 90px;
-  background: linear-gradient(135deg, #704214, #c88d54);
+  padding: 140px 30px 100px;
+  background: linear-gradient(135deg, #704214 0%, #8b5a2b 50%, #c88d54 100%);
   color: white;
   text-align: center;
-  border-radius: 0 0 40px 40px;
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
+  margin-bottom: 60px;
+  position: relative;
+  overflow: hidden;
 }
+
+header.site-hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.05"><path fill="white" d="M50 0L100 50L50 100L0 50Z"/></svg>');
+  background-size: 80px 80px;
+}
+
 header.site-hero h1 {
   font-family: "Merriweather", serif;
-  font-size: 44px;
-  line-height: 1.3;
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1.2;
   margin-bottom: 20px;
+  position: relative;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
+
 header.site-hero p.lead {
   font-size: 18px;
   opacity: 0.95;
-  max-width: 780px;
+  max-width: 680px;
   margin: 0 auto;
+  font-weight: 400;
+  line-height: 1.6;
 }
 
-/* ---------- Card ---------- */
+/* ---------- Card Layout ---------- */
 section.card {
-  background: #fff;
-  border-radius: 18px;
+  background: #ffffff;
+  border-radius: 16px;
   padding: 40px;
   margin-bottom: 40px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-  border-left: 6px solid #c88d54;
-  transition: transform 0.25s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  border: 1px solid #f0e6d8;
+  transition: all 0.3s ease;
+  position: relative;
 }
-section.card:hover { transform: translateY(-4px); }
 
-/* ---------- Titles ---------- */
+section.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #c88d54, #e9b15c);
+  border-radius: 16px 16px 0 0;
+}
+
+section.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* ---------- Typography ---------- */
 .chart-title {
   font-family: "Merriweather", serif;
   color: #704214;
-  font-size: 26px;
+  font-size: 28px;
+  font-weight: 700;
   text-align: center;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
+  line-height: 1.3;
 }
+
 .chart-description {
   text-align: center;
   font-size: 16px;
-  color: #555;
-  margin-bottom: 18px;
+  color: #666;
+  margin-bottom: 30px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
 }
 
-/* ---------- Divider ---------- */
+/* ---------- Section Dividers ---------- */
 .section-divider {
   text-align: center;
-  margin: 70px 0 40px;
+  margin: 80px 0 50px;
   position: relative;
 }
+
 .section-divider h2 {
-  background: #faf8f5;
-  padding: 0 20px;
+  display: inline-block;
+  background: #fefcf8;
+  padding: 0 30px;
   font-family: "Merriweather", serif;
   color: #704214;
+  font-size: 32px;
+  font-weight: 700;
+  position: relative;
+  z-index: 2;
 }
+
 .section-divider::before {
   content: "";
   position: absolute;
   top: 50%;
-  left: 0; right: 0;
-  height: 2px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 3px;
   background: linear-gradient(90deg, transparent, #d5bda5, transparent);
 }
 
-/* ---------- Annotation ---------- */
+/* ---------- Annotations ---------- */
 .annotation {
-  background: #fdf9f3;
+  background: linear-gradient(135deg, #fdf9f3 0%, #faf5ed 100%);
   border-left: 4px solid #e9b15c;
-  padding: 14px 20px;
-  border-radius: 6px;
-  font-size: 14px;
-  color: #444;
-  margin-top: 18px;
+  padding: 20px;
+  border-radius: 8px;
+  font-size: 15px;
+  color: #555;
+  margin-top: 24px;
+  line-height: 1.6;
 }
 
-/* ---------- Footer ---------- */
-footer {
-  background: #704214;
-  color: #f1f1f1;
-  padding: 60px 20px;
-  border-radius: 24px 24px 0 0;
+.annotation strong {
+  color: #704214;
 }
-footer h2.footer-heading {
-  font-family: "Merriweather", serif;
-  font-size: 20px;
-  margin-bottom: 14px;
-}
-footer a {
-  color: #f4a261;
-  text-decoration: none;
-}
-footer a:hover { text-decoration: underline; }
 
-/* ---------- Responsive ---------- */
-@media (max-width: 900px) {
-  .chart-grid, .chart-grid-3 { grid-template-columns: 1fr; }
-  header.site-hero h1 { font-size: 34px; }
-}
-/* ---------- Chart Grid Layout ---------- */
-.chart-grid {
+/* ---------- Insight Cards ---------- */
+.insights-horizontal {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 28px;
-  align-items: start;
-  margin-bottom: 50px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 32px;
 }
 
-.chart-grid .card {
+.insight-card {
+  background: linear-gradient(135deg, #fdf9f3 0%, #faf5ed 100%);
+  border-left: 4px solid #c88d54;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
   height: 100%;
 }
 
-/* ---------- Visualization Container ---------- */
+.insight-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  border-left-color: #e9b15c;
+}
+
+.insight-card h3 {
+  font-family: "Merriweather", serif;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #704214;
+  line-height: 1.4;
+}
+
+.insight-card p {
+  margin: 0;
+  font-size: 15px;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* ---------- Map & Layout Components ---------- */
+.map-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+  margin: 30px 0;
+}
+
+.map-explainer {
+  background: linear-gradient(135deg, #fdf9f3 0%, #faf5ed 100%);
+  padding: 28px;
+  border-radius: 12px;
+  border-left: 4px solid #e9b15c;
+}
+
+.map-explainer h4 {
+  font-family: "Merriweather", serif;
+  color: #704214;
+  font-size: 20px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.indicator-list {
+  list-style: none;
+  margin: 20px 0;
+}
+
+.indicator-list li {
+  margin-bottom: 12px;
+  padding-left: 24px;
+  position: relative;
+  line-height: 1.5;
+}
+
+.indicator-list li:before {
+  content: "▸";
+  color: #c88d54;
+  position: absolute;
+  left: 8px;
+  font-weight: bold;
+}
+
+.explanation-highlight, .highlight {
+  background: #fff3cd;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 600;
+  color: #856404;
+  font-size: 14px;
+}
+
+.context-header {
+  font-family: "Merriweather", serif;
+  color: #704214;
+  font-size: 20px;
+  margin: 30px 0 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e9b15c;
+  font-weight: 600;
+}
+
+/* ---------- Chart Layouts ---------- */
+.chart-with-insights {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 32px;
+  align-items: start;
+  margin: 24px 0;
+}
+
+.insights-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+}
+
+.insights-vertical .insight-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* ---------- Visualization Containers ---------- */
 .visualization {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 8px;
+  margin: 16px 0;
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #f0e6d8;
 }
 
-/* ---------- Responsive ---------- */
-@media (max-width: 900px) {
-  .chart-grid {
+/* ---------- Footer ---------- */
+footer {
+  background: linear-gradient(135deg, #704214 0%, #5a3a1f 100%);
+  color: #f8f8f8;
+  padding: 60px 20px;
+  margin-top: 80px;
+  text-align: center;
+}
+
+footer h2.footer-heading {
+  font-family: "Merriweather", serif;
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #f8d7b4;
+}
+
+footer p {
+  margin-bottom: 8px;
+  color: #e8e8e8;
+}
+
+.data-source-link {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.data-source-link li a {
+  color: #f4a261;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.data-source-link li a:hover {
+  color: #f8d7b4;
+  text-decoration: underline;
+}
+
+/* ---------- Responsive Design ---------- */
+@media (max-width: 1024px) {
+  .map-section,
+  .chart-with-insights {
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: 30px;
+  }
+  
+  .insights-horizontal {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    font-size: 15px;
+  }
+  
+  header.site-hero {
+    padding: 120px 20px 80px;
+  }
+  
+  header.site-hero h1 {
+    font-size: 32px;
+  }
+  
+  .chart-title {
+    font-size: 24px;
+  }
+  
+  section.card {
+    padding: 30px 24px;
+    margin-bottom: 30px;
+  }
+  
+  nav ul {
+    gap: 16px;
+    height: 56px;
+  }
+  
+  nav ul li a {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+  
+  .insights-horizontal {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .insight-card {
+    padding: 20px;
+  }
+  
+  .section-divider h2 {
+    font-size: 28px;
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  header.site-hero h1 {
+    font-size: 28px;
+  }
+  
+  .chart-title {
+    font-size: 22px;
+  }
+  
+  section.card {
+    padding: 24px 20px;
+    border-radius: 12px;
+  }
+  
+  .visualization {
+    padding: 16px;
+  }
+  
+  .data-source-link {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  nav ul {
+    flex-wrap: wrap;
+    gap: 8px;
+    height: auto;
+    padding: 12px 0;
   }
 }
