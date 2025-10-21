@@ -1,12 +1,5 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": {
-    "text": "Do More Heritage Sites Bring More Tourists? (2019)",
-    "fontSize": 18,
-    "fontWeight": "bold",
-    "anchor": "start",
-    "subtitle": "Comparing international tourist arrivals with UNESCO heritage richness by country"
-  },
   "width": 700,
   "height": 420,
   "data": {
@@ -30,25 +23,12 @@
     ]
   },
   "transform": [
-    {
-      "window": [{"op": "rank", "as": "tourism_rank"}],
-      "sort": [{"field": "tourists", "order": "descending"}]
-    },
-    {
-      "calculate": "datum.tourism_rank <= 8 ? datum.country : ''",
-      "as": "country_label"
-    }
+    {"window": [{"op": "rank", "as": "tourism_rank"}], "sort": [{"field": "tourists", "order": "descending"}]},
+    {"calculate": "datum.tourism_rank <= 8 ? datum.country : ''", "as": "country_label"}
   ],
   "layer": [
     {
-      "mark": {
-        "type": "circle",
-        "opacity": 0.78,
-        "filled": true,
-        "stroke": "white",
-        "strokeWidth": 1,
-        "size": 150
-      },
+      "mark": {"type": "circle", "opacity": 0.78, "filled": true, "stroke": "white", "strokeWidth": 1},
       "encoding": {
         "x": {
           "field": "tourists",
@@ -60,7 +40,8 @@
           "field": "sites",
           "type": "quantitative",
           "title": "Number of UNESCO Heritage Sites",
-          "scale": {"nice": true}
+          "scale": {"nice": true},
+          "axis": {"labelColor": "#374151", "titleColor": "#374151"}
         },
         "color": {
           "field": "region",
@@ -69,25 +50,31 @@
           "scale": {
             "domain": [
               "Europe and North America",
-              "Asia and the Pacific", 
+              "Asia and the Pacific",
               "Latin America and the Caribbean",
               "Africa",
               "Arab States"
             ],
-            "range": ["#3b82f6", "#ef4444", "#10b981", "#f59e0b", "#8b5cf6"]
+            "range": ["#3b82f6", "#ef4444", "#facc15", "#f59e0b", "#8b5cf6"]
           },
           "legend": {
             "orient": "bottom",
             "titleFontSize": 12,
             "labelFontSize": 11,
-            "columns": 3
+            "columns": 3,
+            "symbolSize": 80
           }
         },
         "size": {
           "field": "sites",
           "type": "quantitative",
-          "scale": {"range": [100, 500]},
-          "legend": null
+          "scale": {"range": [100, 1500]},
+          "legend": {
+            "title": "Bubble Size: Number of Heritage Sites",
+            "orient": "right",
+            "titleFontSize": 12,
+            "labelFontSize": 11
+          }
         },
         "tooltip": [
           {"field": "country", "title": "Country"},
@@ -99,39 +86,36 @@
       }
     },
     {
-      "mark": {
-        "type": "text",
-        "align": "left",
-        "baseline": "middle",
-        "dx": 8,
-        "fontSize": 10,
-        "fontWeight": "bold",
-        "color": "#1e293b"
-      },
+      "mark": {"type": "text", "align": "left", "baseline": "middle", "dx": 8, "fontSize": 10, "fontWeight": "bold", "color": "#1e293b"},
       "transform": [{"filter": "datum.country_label !== ''"}],
-      "encoding": {
-        "x": {"field": "tourists"},
-        "y": {"field": "sites"},
-        "text": {"field": "country_label"}
-      }
+      "encoding": {"x": {"field": "tourists"}, "y": {"field": "sites"}, "text": {"field": "country_label"}}
     },
     {
       "transform": [{"regression": "sites", "on": "tourists", "method": "linear"}],
+      "mark": {"type": "line", "color": "#ef4444", "strokeWidth": 2, "strokeDash": [4, 4], "opacity": 0.7},
+      "encoding": {"x": {"field": "tourists"}, "y": {"field": "sites"}}
+    },
+    {
       "mark": {
-        "type": "line",
-        "color": "#dc2626",
-        "strokeWidth": 2,
-        "strokeDash": [4, 4],
-        "opacity": 0.7
-      },
-      "encoding": {
-        "x": {"field": "tourists"},
-        "y": {"field": "sites"}
+        "type": "text",
+        "text": "↑ Regression line: Positive correlation\nbetween tourism arrivals and heritage sites",
+        "color": "#b91c1c",
+        "align": "left",
+        "fontSize": 11,
+        "x": 60,
+        "y": 120
       }
     }
   ],
   "config": {
     "view": {"stroke": "transparent"},
-    "background": "transparent"
+    "background": "transparent",
+    "axis": {"labelFont": "Sora", "titleFont": "Bree Serif"},
+    "legend": {
+      "labelFont": "Sora",
+      "titleFont": "Bree Serif",
+      "titleColor": "#374151",
+      "labelColor": "#4b5563"
+    }
   }
 }
