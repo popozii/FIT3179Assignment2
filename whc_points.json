@@ -1,84 +1,192 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 900,
-  "height": 480,
-  "title": "Global Distribution of UNESCO World Heritage Sites",
-  "projection": {"type": "equalEarth"},
+ 
+  "width": 1050,
+  "height": 500,
+  "autosize": {
+    "type": "fit",
+    "contains": "padding"
+  },
+  "background": "#FAFAF8",
+  "projection": {"type": "equalEarth", "scale": {"expr": "zoom_level"}},
   "params": [
     {
-      "name": "heritageType",
-      "value": "All",
+      "name": "heritageTypeFilter",
+      "value": null,
       "bind": {
         "input": "select",
-        "options": ["All", "Cultural", "Natural", "Mixed"],
-        "name": "Filter by Site Type:"
+        "options": [null, "Cultural", "Natural", "Mixed"],
+        "name": "Filter by Heritage Type:"
       }
     },
     {
-      "name": "select_country", 
-      "value": "All",
-      "bind": {
-        "input": "select",
-        "options": ["All", "Italy", "China", "France", "Germany", "Spain", "India", "Mexico", "United Kingdom", "United States"],
-        "name": "Highlight Country:"
-      }
-    }
+  "name": "Year_selection",
+  "value": 2000,
+  "bind": {
+    "input": "range",
+    "min": 1980,
+    "max": 2023,
+    "step": 1,
+    "name": "Year: "
+  }
+},
+{
+  "name": "zoom_level",
+  "value": 150,
+  "bind": {
+    "input": "range",
+    "min": 50,
+    "max": 500,
+    "step": 10,
+    "name": "Zoom: "
+  }
+},
+{
+  "name": "continent_selection",
+  "value": "All",
+  "bind": {
+    "input": "select",
+    "options": ["All", "Europe and North America", "Asia and the Pacific", "Africa", "Latin America and the Caribbean", "Arab States"],
+    "name": "Select Continent: "
+  }
+}
   ],
   "layer": [
     {
       "data": {"sphere": true},
-      "mark": {"type": "geoshape", "fill": "#a9d1f7", "stroke": null}
+      "mark": {
+        "type": "geoshape",
+        "fill": "lightblue",
+        "stroke": "steelblue",
+        "strokeWidth": 1
+      }
     },
-
     {
-      "data": {"graticule": {"step": [10, 10]}},
-      "mark": {"type": "geoshape", "stroke": "white", "strokeWidth": 0.3, "fill": null}
+      "data": {"graticule": {"step": [30, 30]}},
+      "mark": {
+        "type": "geoshape",
+        "fill": null,
+        "stroke": "#666666",
+        "strokeWidth": 0.5,
+        "strokeOpacity": 0.5
+      }
     },
-
     {
       "data": {
         "url": "https://raw.githubusercontent.com/vega/vega-datasets/master/data/world-110m.json",
         "format": {"type": "topojson", "feature": "countries"}
       },
-      "mark": {"type": "geoshape", "fill": "#e6e6e6", "stroke": "white"}
+      "mark": {
+        "type": "geoshape",
+        "fill": "#e8e8e8",
+        "stroke": "white",
+        "strokeWidth": 0.5
+      }
     },
-
     {
       "data": {
-        "url": "whc-sites-2025.csv",
-        "format": {"type": "csv"}
+        "url": "https://raw.githubusercontent.com/vega/vega-datasets/master/data/world-110m.json",
+        "format": {"type": "topojson", "feature": "countries"}
       },
       "transform": [
         {
-          "filter": "(heritageType === 'All' || datum.category === heritageType) && (select_country === 'All' || datum.states_name_en === select_country)"
-        }
+          "lookup": "id",
+          "from": {
+            "data": {
+              "url": "https://raw.githubusercontent.com/popozii/FIT3179Assignment2/main/whc-sites-filtered.csv"
+            },
+            "key": "country_id",
+            "fields": ["site_count"]
+          }
+        },
+        {"filter": "datum.site_count != null"}
       ],
       "mark": {
-        "type": "circle", 
-        "filled": true, 
-        "stroke": "white", 
-        "strokeWidth": 0.6,
-        "opacity": 0.9
+        "type": "geoshape",
+        "fill": "#C7E9C0",
+        "stroke": "white",
+        "strokeWidth": 0.5
+      }
+    },
+    {
+       "data": {
+    "url": "https://raw.githubusercontent.com/popozii/FIT3179Assignment2/main/whc-sites-filtered.csv"
+  },
+  "transform": [
+    {
+      "filter": "(heritageTypeFilter == null || datum.category == heritageTypeFilter) && (continent_selection == 'All' || datum.region_en == continent_selection) && (datum.date_inscribed == null || datum.date_inscribed <= Year_selection)"
+    },
+    {
+      "aggregate": [{"op": "count", "as": "site_count"}],
+      "groupby": ["states_name_en", "longitude", "latitude", "category"]
+    },
+    {
+      "filter": "isValid(datum.longitude) && isValid(datum.longitude) && datum.longitude >= -180 && datum.longitude <= 180 && datum.latitude >= -90 && datum.latitude <= 90"
+    },
+    {
+      "window": [{"op": "rank", "as": "country_rank"}],
+      "sort": [{"field": "site_count", "order": "descending"}]
+    }
+  ],
+      "mark": {
+        "type": "circle",
+        "opacity": 0.6,
+        "stroke": "#000",
+        "strokeWidth": 1
       },
       "encoding": {
         "longitude": {"field": "longitude", "type": "quantitative"},
         "latitude": {"field": "latitude", "type": "quantitative"},
+        "size": {
+          "field": "site_count",
+          "type": "quantitative",
+          "title": "Number of Heritage Sites",
+          "scale": {"type": "sqrt", "domain": [1, 60], "range": [50, 2000]},
+          "legend": null
+        },
         "color": {
-          "field": "category", 
+          "field": "category",
           "type": "nominal",
-          "title": "Type of Heritage",
+          "title": "Heritage Type",
           "scale": {
             "domain": ["Cultural", "Natural", "Mixed"],
-            "range": ["#3498db", "#27ae60", "#e67e22"]
+            "range": ["#1f77b4", "#ff7f0e", "#2ca02c"]
+          },
+          "legend": {
+            "orient": "bottom",
+            "titleFontSize": 12,
+            "labelFontSize": 11
           }
         },
-        "size": {
-          "condition": {
-            "test": "select_country !== 'All' && datum.states_name_en === select_country",
-            "value": 70
-          },
-          "value": 45
-        },
+        "tooltip": [
+          {"field": "states_name_en", "title": "Country"},
+          {"field": "category", "title": "Type"},
+          {"field": "site_count", "title": "Number of Sites"}
+        ]
+      }
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/popozii/FIT3179Assignment2/main/whc-sites-filtered.csv"
+      },
+      "transform": [
+        {
+  "filter": "(heritageTypeFilter == null || datum.category == heritageTypeFilter) && (continent_selection == 'All' || datum.region_en == continent_selection) && (datum.date_inscribed == null || datum.date_inscribed <= Year_selection)"
+},
+        {
+          "filter": "isValid(datum.longitude) && isValid(datum.latitude) && datum.longitude >= -180 && datum.longitude <= 180 && datum.latitude >= -90 && datum.latitude <= 90"
+        }
+      ],
+      "mark": {
+        "type": "circle",
+        "opacity": 0,
+        "stroke": "#000",
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "longitude": {"field": "longitude", "type": "quantitative"},
+        "latitude": {"field": "latitude", "type": "quantitative"},
+        "size": {"value": 50},
         "tooltip": [
           {"field": "name_en", "title": "Site"},
           {"field": "states_name_en", "title": "Country"},
@@ -87,9 +195,88 @@
         ]
       }
     },
-
     {
-      "data": {"values": [{"lon": 12.5674, "lat": 41.8719}]},
+      "data": {
+        "values": [
+          {"lon": 68.0, "lat": -49.0, "text_lon": 100, "text_lat": -30}
+        ]
+      },
+      "mark": {
+        "type": "rule",
+        "strokeWidth": 1.5,
+        "color": "#e76f51",
+        "opacity": 0.7
+      },
+      "encoding": {
+        "longitude": {"field": "lon", "type": "quantitative"},
+        "latitude": {"field": "lat", "type": "quantitative"},
+        "longitude2": {"field": "text_lon"},
+        "latitude2": {"field": "text_lat"}
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {"lon": 100, "lat": -30}
+        ]
+      },
+      "mark": {
+        "type": "point",
+        "size": 80,
+        "fill": "#FFFFFF",
+        "stroke": "#e76f51",
+        "strokeWidth": 2
+      },
+      "encoding": {
+        "longitude": {"field": "lon", "type": "quantitative"},
+        "latitude": {"field": "lat", "type": "quantitative"}
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {"lon": 100, "lat": -30, "label": "French Austral Lands and Sea"}
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "dy": -20,
+        "color": "#264653",
+        "align": "center"
+      },
+      "encoding": {
+        "longitude": {"field": "lon", "type": "quantitative"},
+        "latitude": {"field": "lat", "type": "quantitative"},
+        "text": {"field": "label", "type": "nominal"}
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {"lon": 100, "lat": -31, "text": "Marine protected area in Southern Ocean"}
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "fontSize": 10,
+        "dy": -5,
+        "color": "#666666",
+        "align": "center"
+      },
+      "encoding": {
+        "longitude": {"field": "lon", "type": "quantitative"},
+        "latitude": {"field": "lat", "type": "quantitative"},
+        "text": {"field": "text", "type": "nominal"}
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {"country": "Italy", "lon": 12.5674, "lat": 41.8719, "text_lon": -10, "text_lat": 50}
+        ]
+      },
       "mark": {
         "type": "circle", 
         "filled": false, 
@@ -103,9 +290,12 @@
         "size": {"value": 14000}
       }
     },
-
     {
-      "data": {"values": [{"lon": 104.1954, "lat": 35.8617}]},
+      "data": {
+        "values": [
+          {"country": "China", "lon": 104.1954, "lat": 35.8617, "text_lon": 120, "text_lat": 40}
+        ]
+      },
       "mark": {
         "type": "circle", 
         "filled": false, 
@@ -119,46 +309,71 @@
         "size": {"value": 20000}
       }
     },
-
     {
-      "data": {"values": [{"lon": 14.3, "lat": 44.2, "text": "Italy — many heritage sites"}]},
+      "data": {
+        "values": [
+          {"country": "Germany", "lon": 13.4050, "lat": 52.5200, "text_lon": -5, "text_lat": 55}
+        ]
+      },
       "mark": {
-        "type": "text", 
-        "fontSize": 11, 
-        "fontWeight": 600, 
-        "color": "#264653", 
-        "dx": 6, 
-        "dy": -6
+        "type": "circle", 
+        "filled": false, 
+        "stroke": "#f4a261", 
+        "strokeWidth": 2, 
+        "opacity": 0.8
       },
       "encoding": {
         "longitude": {"field": "lon"},
         "latitude": {"field": "lat"},
-        "text": {"field": "text"}
+        "size": {"value": 12000}
       }
     },
     {
-      "data": {"values": [{"lon": 116.5, "lat": 38.5, "text": "China — large number of sites"}]},
+      "data": {
+        "values": [
+          {"country": "Italy", "lon": 12.5674, "lat": 41.8719, "rank": "#1", "sites": "58 sites", "text_lon": -10, "text_lat": 50, "label": "#1 Italy"},
+          {"country": "China", "lon": 104.1954, "lat": 35.8617, "rank": "#2", "sites": "57 sites", "text_lon": 120, "text_lat": 40, "label": "#2 China"},
+          {"country": "Germany", "lon": 13.4050, "lat": 52.5200, "rank": "#3", "sites": "52 sites", "text_lon": -5, "text_lat": 55, "label": "#3 Germany"}
+        ]
+      },
       "mark": {
-        "type": "text", 
-        "fontSize": 11, 
-        "fontWeight": 600, 
-        "color": "#264653", 
-        "dx": 6, 
-        "dy": -6
+        "type": "text",
+        "fontSize": 16,
+        "fontWeight": "bold",
+        "dy": -20,
+        "color": "#000000",
+        "align": "center"
       },
       "encoding": {
-        "longitude": {"field": "lon"},
-        "latitude": {"field": "lat"},
-        "text": {"field": "text"}
+        "longitude": {"field": "text_lon", "type": "quantitative"},
+        "latitude": {"field": "text_lat", "type": "quantitative"},
+        "text": {"field": "label", "type": "nominal"}
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {"country": "Italy", "lon": 12.5674, "lat": 41.8719, "rank": "#1", "sites": "58 sites", "text_lon": -15, "text_lat": 30},
+          {"country": "China", "lon": 104.1954, "lat": 35.8617, "rank": "#2", "sites": "57 sites", "text_lon": 125, "text_lat": 48},
+          {"country": "Germany", "lon": 13.4050, "lat": 52.5200, "rank": "#3", "sites": "52 sites", "text_lon": -10, "text_lat": 59}
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "fontSize": 11,
+        "dy": -25,
+        "color": "#666666",
+        "align": "center"
+      },
+      "encoding": {
+        "longitude": {"field": "text_lon", "type": "quantitative"},
+        "latitude": {"field": "text_lat", "type": "quantitative"},
+        "text": {"field": "sites", "type": "nominal"}
       }
     }
   ],
   "config": {
-    "view": {"stroke": "transparent"},
-    "legend": {
-      "orient": "bottom",
-      "titleFontSize": 12,
-      "labelFontSize": 11
-    }
+    "view": {"stroke": null},
+    "background": "#FAFAF8"
   }
 }
