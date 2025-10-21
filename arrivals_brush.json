@@ -14,11 +14,11 @@
       "as": ["Year", "Arrivals"]
     },
     {
-      "calculate": "toDate(datum.Year + '-01-01')", 
+      "calculate": "toDate(datum.Year + '-01-01')",
       "as": "Year_date"
     },
     {
-      "calculate": "toNumber(datum.Arrivals)", 
+      "calculate": "toNumber(datum.Arrivals)",
       "as": "Arrivals_num"
     },
     {
@@ -31,33 +31,33 @@
       "groupby": ["Year_date"]
     },
     {
-      "calculate": "datum.Total_Arrivals / 1000000", 
+      "calculate": "datum.Total_Arrivals / 1000000",
       "as": "Arrivals_Millions"
     }
   ],
   "vconcat": [
     {
-      "width": 900,
-      "height": 300,
-      "title": "Global Tourist Arrivals Over Time (1995-2020)",
+      "width": 950,
+      "height": 400,
+      
       "layer": [
         {
           "mark": {
             "type": "area",
-            "fill": "#3498db",
-            "fillOpacity": 0.3
+            "fill": "#dceefa",
+            "fillOpacity": 0.55
           },
           "encoding": {
             "x": {
-              "field": "Year_date", 
-              "type": "temporal", 
+              "field": "Year_date",
+              "type": "temporal",
               "title": "Year",
               "axis": {"format": "%Y", "grid": false},
               "scale": {"domain": {"param": "brush"}}
             },
             "y": {
-              "field": "Arrivals_Millions", 
-              "type": "quantitative", 
+              "field": "Arrivals_Millions",
+              "type": "quantitative",
               "title": "Tourist Arrivals (Millions)",
               "axis": {"format": "~s"}
             }
@@ -66,25 +66,140 @@
         {
           "mark": {
             "type": "line",
-            "color": "#2980b9",
-            "strokeWidth": 3
+            "color": "#1f4f8a",
+            "strokeWidth": 3,
+            "strokeOpacity": 0.95
           },
           "encoding": {
             "x": {
-              "field": "Year_date", 
+              "field": "Year_date",
               "type": "temporal",
               "scale": {"domain": {"param": "brush"}}
             },
             "y": {
-              "field": "Arrivals_Millions", 
+              "field": "Arrivals_Millions",
               "type": "quantitative"
             }
+          }
+        },
+
+        {
+          "transform": [{"filter": "year(datum.Year_date) == 2019"}],
+          "mark": {"type": "point", "filled": true, "size": 100, "color": "#2e8b57"},
+          "encoding": {
+            "x": {"field": "Year_date", "type": "temporal", "scale": {"domain": {"param": "brush"}}},
+            "y": {"field": "Arrivals_Millions", "type": "quantitative"},
+            "tooltip": [{"field": "Arrivals_Millions", "title": "2019 (Millions)", "format": ".2f"}]
+          }
+        },
+        {
+          "transform": [{"filter": "year(datum.Year_date) == 2019"}],
+          "mark": {
+            "type": "text",
+            "align": "center",
+            "dy": -18,
+            "fontWeight": "bold",
+            "fontSize": 12,
+            "color": "#2e8b57"
+          },
+          "encoding": {
+            "x": {"field": "Year_date", "type": "temporal", "scale": {"domain": {"param": "brush"}}},
+            "y": {"field": "Arrivals_Millions", "type": "quantitative"},
+            "text": {"value": "2019 — Historical peak"}
+          }
+        },
+
+        {
+          "transform": [{"filter": "year(datum.Year_date) == 2020"}],
+          "mark": {"type": "rule", "strokeDash": [6,4], "color": "#e74c3c", "strokeWidth": 1.5},
+          "encoding": {
+            "x": {"field": "Year_date", "type": "temporal", "scale": {"domain": {"param": "brush"}}}
+          }
+        },
+        {
+          "transform": [{"filter": "year(datum.Year_date) == 2020"}],
+          "mark": {"type": "point", "filled": true, "size": 110, "color": "#e74c3c"},
+          "encoding": {
+            "x": {"field": "Year_date", "type": "temporal", "scale": {"domain": {"param": "brush"}}},
+            "y": {"field": "Arrivals_Millions", "type": "quantitative"},
+            "tooltip": [{"field": "Arrivals_Millions", "title": "2020 (Millions)", "format": ".2f"}]
+          }
+        },
+        {
+          "transform": [{"filter": "year(datum.Year_date) == 2020"}],
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "dx": 8,
+            "dy": -60,
+            "fontSize": 12,
+            "fontWeight": "bold",
+            "color": "#e74c3c"
+          },
+          "encoding": {
+            "x": {"field": "Year_date", "type": "temporal", "scale": {"domain": {"param": "brush"}}},
+            "y": {"field": "Arrivals_Millions", "type": "quantitative"},
+            "text": {"value": "2020 — COVID-19 shock\nGlobal arrivals collapsed"}
+          }
+        },
+
+      
+        {
+          "transform": [{"filter": "year(datum.Year_date) == 2008"}],
+          "mark": {"type": "point", "filled": true, "size": 80, "color": "#7f8c8d", "opacity": 0.9},
+          "encoding": {
+            "x": {"field": "Year_date", "type": "temporal", "scale": {"domain": {"param": "brush"}}},
+            "y": {"field": "Arrivals_Millions", "type": "quantitative"},
+            "tooltip": [{"field": "Arrivals_Millions", "title": "2008 (Millions)", "format": ".2f"}]
+          }
+        },
+        {
+          "transform": [{"filter": "year(datum.Year_date) == 2008"}],
+          "mark": {
+            "type": "text",
+            "align": "right",
+            "dx": -8,
+            "dy": -28,
+            "fontSize": 11,
+            "color": "#7f8c8d"
+          },
+          "encoding": {
+            "x": {"field": "Year_date", "type": "temporal", "scale": {"domain": {"param": "brush"}}},
+            "y": {"field": "Arrivals_Millions", "type": "quantitative"},
+            "text": {"value": "2008 — Global financial crisis\nTravel slowdown"}
+          }
+        },
+
+       
+        {
+          "transform": [{"filter": "year(datum.Year_date) == 2012"}],
+          "mark": {
+            "type": "text",
+            "align": "center",
+            "dy": 36,
+            "fontSize": 11,
+            "color": "#34495e"
+          },
+          "encoding": {
+            "x": {"field": "Year_date", "type": "temporal", "scale": {"domain": {"param": "brush"}}},
+            "y": {"field": "Arrivals_Millions", "type": "quantitative"},
+            "text": {"value": "2010–2014: gradual recovery\nand growth after crisis"}
+          }
+        },
+
+        {
+          "transform": [{"filter": "year(datum.Year_date) == 2015"}],
+          "mark": {"type": "text", "align": "left", "dx": 8, "dy": -16, "fontSize": 11, "color": "#1f4f8a"},
+          "encoding": {
+            "x": {"field": "Year_date", "type": "temporal", "scale": {"domain": {"param": "brush"}}},
+            "y": {"field": "Arrivals_Millions", "type": "quantitative"},
+            "text": {"value": "2015+: steady expansion of tourism"}
           }
         }
       ]
     },
     {
-      "width": 900,
+      "width": 950,
       "height": 60,
       "title": "Brush here to filter time period ↑",
       "mark": "line",
@@ -101,7 +216,7 @@
       "encoding": {
         "x": {
           "field": "Year_date",
-          "type": "temporal", 
+          "type": "temporal",
           "axis": {"title": "", "format": "%Y"}
         },
         "y": {
